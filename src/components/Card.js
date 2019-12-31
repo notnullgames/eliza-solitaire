@@ -3,9 +3,13 @@ import { useDrag } from 'react-dnd'
 
 import cardImages from '../cards/*.png'
 
-const Card = ({ sequence, value, flipped = false, style, ...props }) => {
-  const [, drag] = useDrag({
-    item: { id: `${sequence}-${value}`, type: `card${value}` }
+const Card = ({ sequence, value, flipped = false, style, onEnd = () => {}, ...props }) => {
+  const [{ opacity }, drag] = useDrag({
+    item: { id: `${sequence}-${value}`, type: 'card' },
+    end: onEnd,
+    collect: monitor => ({
+      opacity: monitor.isDragging() ? 0.8 : 1
+    })
   })
 
   return (
@@ -18,6 +22,7 @@ const Card = ({ sequence, value, flipped = false, style, ...props }) => {
         height: 240,
         width: 144,
         backgroundImage: `url(${flipped ? cardImages.back : cardImages[`${sequence}${value}`]})`,
+        opacity,
         ...style
       }}
       {...props} />

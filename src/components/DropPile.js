@@ -1,9 +1,11 @@
 import React from 'react'
 import { useDrop } from 'react-dnd'
 
-const DropPile = ({ enabled, accept = [] }) => {
+import Card from './Card'
+
+const DropPile = ({ enabled, onDrop, cards }) => {
   const [, drop] = useDrop({
-    accept
+    accept: 'card'
   })
   return (
     <div
@@ -14,7 +16,11 @@ const DropPile = ({ enabled, accept = [] }) => {
         border: `4px dashed ${enabled ? 'red' : 'blue'}`,
         margin: 10
       }}
-    />
+    >
+      {
+        cards.map((card, i) => <Card onEnd={onDrop} key={i} {...card} style={{ top: i * 30, zIndex: i }} />)
+      }
+    </div>
   )
 }
 
