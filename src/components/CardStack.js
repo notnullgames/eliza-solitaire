@@ -3,17 +3,16 @@ import { useDrop } from 'react-dnd'
 
 import Card from './Card'
 
-const CardStack = ({ cards, onDrop }) => {
+const CardStack = ({ cards, show, enabled = true }) => {
   const [, drop] = useDrop({
     accept: 'card'
   })
   return (
-    <div ref={drop} style={{ height: '100%', width: 144, margin: 10, position: 'relative' }}>
-      {
-        cards.length === 0
-          ? <div style={{ height: 240, width: 144, border: '4px solid maroon' }} />
-          : cards.map((card, i) => <Card onEnd={onDrop} key={i} {...card} style={{ top: i * 30, zIndex: i }} />)
-      }
+    <div ref={drop} style={{ position: 'relative', width: 144, margin: 5 }}>
+      <div style={{ height: 240, width: 144, border: `4px dashed ${enabled ? '#A22844' : '#38333B'}` }} />
+      <div>
+        {(cards || []).map((card, c) => <Card data={card} style={{ top: show ? c * 40 : 0 }} key={card.id} />)}
+      </div>
     </div>
   )
 }
